@@ -1,6 +1,6 @@
 image: ubuntu:20.04
 
-test:
+1msg-30s:
   stage: test
   tags: 
     - dropped-messages
