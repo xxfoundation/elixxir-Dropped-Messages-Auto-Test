@@ -16,3 +16,20 @@ image: ubuntu:20.04
     paths:
       - "delayedpickup/results/*"
       - "delayedpickup/blob/*"
+
+30msg-5m:
+  stage: test
+  tags: 
+    - dropped-messages
+  script:
+    - apt update
+    - apt install -y git curl openssl file jq python3
+    - mkdir bin
+    - ./download_cmix_binaries.sh
+    - cd delayedpickup
+    - ./run.sh 162.55.100.14:22840 300 30
+  artifacts:
+    when: always
+    paths:
+      - "delayedpickup/results/*"
+      - "delayedpickup/blob/*"
