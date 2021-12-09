@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 
 from datetime import datetime
-
-pwd = "/Users/jonahhusson/gitlab.com/elixxir/integration/delayedpickup"
+import argparse
 
 
 def main():
+    args = parse_args()
+    results_dir = args['results']
+
     # SENDER LOGS
-    client42_log = get_file_contents(pwd+"/results/clients/client42-wv.log")
-    client42_text = get_file_contents(pwd+"/results/clients/client42-wv.txt")
+    client42_log = get_file_contents(results_dir+"/clients/client42-wv.log")
+    client42_text = get_file_contents(results_dir+"/clients/client42-wv.txt")
 
     # RECEIVER LOGS
-    client43_log = get_file_contents(pwd+"/results/clients/client43-wv.log")
-    client43_text = get_file_contents(pwd+"/results/clients/client43-wv.txt")
+    client43_log = get_file_contents(results_dir+"/clients/client43-wv.log")
+    client43_text = get_file_contents(results_dir+"/clients/client43-wv.txt")
 
     messages = {}
     failedrounds = {}
@@ -68,6 +70,17 @@ def main():
         received = val['received']
         received_parsed = datetime.strptime(received[0] + " " + received[1], "%Y/%m/%d %H:%M:%S.%f")
         print(f"Message [{key}]: sent {sent_parsed}, received {received_parsed}, delta: {received_parsed - sent_parsed}")
+        with open(args['file'], "a") as f:
+            f.write(f"{key}, {val['sent']}, {val['received']}, {received_parsed - sent_parsed}, {val['sentRound']}, {val['receiverID']}, {val['senderID']}")
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--results", type=str, help="Full path to results directory")
+    parser.add_argument("--file", metavar="f", type=str, help="Output file path")
+    args, unknown = parser.parse_known_args()
+    args = vars(args)
+    return args
 
 
 def get_file_contents(path):
