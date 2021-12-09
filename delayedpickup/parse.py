@@ -3,11 +3,11 @@
 from datetime import datetime
 import argparse
 
-results_dir = ""
-
 
 def main():
-    global results_dir
+    args = parse_args()
+    results_dir = args['results']
+
     # SENDER LOGS
     client42_log = get_file_contents(results_dir+"/clients/client42-wv.log")
     client42_text = get_file_contents(results_dir+"/clients/client42-wv.txt")
@@ -15,9 +15,6 @@ def main():
     # RECEIVER LOGS
     client43_log = get_file_contents(results_dir+"/clients/client43-wv.log")
     client43_text = get_file_contents(results_dir+"/clients/client43-wv.txt")
-
-    args = parse_args()
-    results_dir = args['results']
 
     messages = {}
     failedrounds = {}
