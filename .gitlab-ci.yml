@@ -12,6 +12,7 @@ image: ubuntu:20.04
     - cd delayedpickup
     - ./run.sh 162.55.100.14:22840 30 1
   artifacts:
+    when: always
     paths:
       - "delayedpickup/results/*"
       - "delayedpickup/blob/*"
