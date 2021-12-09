@@ -1,0 +1,13 @@
+image: ubuntu:20.04
+
+test:
+  stage: test
+  script:
+    - ./download_cmix_binaries.sh
+    - cd delayedpickup
+    - ./run.sh 162.55.100.14:22840 30 1
+    - python3 parse.py
+  artifacts:
+    paths:
+      - "delayedpickup/results/*"
+      - "delayedpickup/blob/*"
