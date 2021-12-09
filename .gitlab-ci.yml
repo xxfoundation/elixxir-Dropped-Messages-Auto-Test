@@ -33,3 +33,21 @@ image: ubuntu:20.04
     paths:
       - "delayedpickup/results/*"
       - "delayedpickup/blob/*"
+
+30msg-8h:
+  stage: test
+  timeout: 9 hours
+  tags: 
+    - dropped-messages
+  script:
+    - apt update
+    - apt install -y git curl openssl file jq python3
+    - mkdir bin
+    - ./download_cmix_binaries.sh
+    - cd delayedpickup
+    - ./run.sh 162.55.100.14:22840 28800 30
+  artifacts:
+    when: always
+    paths:
+      - "delayedpickup/results/*"
+      - "delayedpickup/blob/*"
