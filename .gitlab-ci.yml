@@ -3,6 +3,8 @@ image: ubuntu:20.04
 test:
   stage: test
   script:
+    - apt install -y git curl openssl
+    - mkdir bin
     - ./download_cmix_binaries.sh
     - cd delayedpickup
     - ./run.sh 162.55.100.14:22840 30 1
