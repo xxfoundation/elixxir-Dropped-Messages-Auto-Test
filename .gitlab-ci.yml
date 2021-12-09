@@ -3,6 +3,7 @@ image: ubuntu:20.04
 test:
   stage: test
   script:
+    - apt update
     - apt install -y git curl openssl
     - mkdir bin
     - ./download_cmix_binaries.sh
