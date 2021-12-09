@@ -2,6 +2,8 @@ image: ubuntu:20.04
 
 test:
   stage: test
+  tags: 
+    - dropped-messages
   script:
     - apt update
     - apt install -y git curl openssl file jq python3
