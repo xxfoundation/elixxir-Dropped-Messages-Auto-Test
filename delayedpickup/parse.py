@@ -3,8 +3,14 @@
 from datetime import datetime
 import argparse
 
+SENT_ROUND = 'sentRound'
+SENT_TIME = 'sent'
+RECEIVER_ID = 'receiverID'
+RECEIVED_TIME = 'received'
+SENDER_ID = 'senderID'
 
 def main():
+    exit_code = 0
     args = parse_args()
     results_dir = args['results']
 
@@ -32,7 +38,7 @@ def main():
                 if not to_round.isnumeric():
                     print(f"WARNING: Parsed round id {to_round} is not numeric")
                     to_round = -1
-                messages[digest] = {"sent": (date, time), "receiverID": source, "sentRound": int(to_round)}
+                messages[digest] = {SENT_TIME: (date, time), RECEIVER_ID: source, SENT_ROUND: int(to_round)}
                 sendcnt += 1
             elif "Result of sending message" in rest:
                 statusmsgs = [l for l in client42_log[ind+1:ind+3] if "Round" in l and ("failed" in l or "timed" in l)]
@@ -40,7 +46,7 @@ def main():
                     for part in msg.split():
                         if part.isnumeric():
                             for key in list(messages):
-                                if messages[key]['sentRound'] == int(part):
+                                if messages[key][SENT_ROUND] == int(part):
                                     print(f"Round timed out - removing message {key}")
                                     del messages[key]
         except Exception as e:
@@ -57,22 +63,35 @@ def main():
             if level == "INFO" and "Received message of type E2E" in rest:
                 digest = rest.split(" ")[-1].strip()
                 sender_id = rest[rest.find("from"):].split()[1]
-                messages[digest]['received'] = (date, time)
-                messages[digest]['senderID'] = sender_id
+                messages[digest][RECEIVED_TIME] = (date, time)
+                messages[digest][SENDER_ID] = sender_id
                 recvcnt += 1
         except Exception as e:
             pass
 
     for key in list(messages):
-        val = messages[key]
-        sent = val['sent']
+        message_received = False
+        val = messages.get(key)
+        sent = val.get(SENT_TIME)
         sent_parsed = datetime.strptime(sent[0] + " " + sent[1], "%Y/%m/%d %H:%M:%S.%f")
-        received = val['received']
-        received_parsed = datetime.strptime(received[0] + " " + received[1], "%Y/%m/%d %H:%M:%S.%f")
-        print(f"Message [{key}]: sent {sent_parsed}, received {received_parsed}, delta: {received_parsed - sent_parsed}")
-        with open(args['file'], "a") as f:
-            f.write(f"{key}, {val['sent']}, {val['received']}, {received_parsed - sent_parsed}, {val['sentRound']}, {val['receiverID']}, {val['senderID']}\n")
+        if RECEIVED_TIME in val.keys():
+            message_received = True
+            received = val[RECEIVED_TIME]
+            received_parsed = datetime.strptime(received[0] + " " + received[1], "%Y/%m/%d %H:%M:%S.%f")
+            delta = received_parsed - sent_parsed
+            print(f"Message [{key}]: sent {sent_parsed}, received {received_parsed}, delta: {delta}")
+        else:
+            received_parsed = None
+            delta = 0
+            exit_code = 1
+            print(f"Message [{key}]: sent {sent_parsed} NOT RECEIVED")
 
+        with open(args['file'], "a") as f:
+            f.write(f"{key}, {sent_parsed}, {received_parsed}, {delta}, {val.get('sentRound')}, "
+                    f"{val.get('receiverID')}, {val.get('senderID')}, {message_received}\n")
+
+    print(f"Received {recvcnt}/{sendcnt}")
+    exit(exit_code)
 
 def parse_args():
     parser = argparse.ArgumentParser()
