@@ -17,7 +17,6 @@ def main():
     client43_text = get_file_contents(results_dir+"/clients/client43-wv.txt")
 
     messages = {}
-    failedrounds = {}
     sendcnt = 0
     for ind, l in enumerate(client42_log):
         try:
@@ -40,7 +39,10 @@ def main():
                 for msg in statusmsgs:
                     for part in msg.split():
                         if part.isnumeric():
-                            failedrounds[int(part)] = True
+                            for key in list(messages):
+                                if messages[key]['sentRound'] == int(part):
+                                    print(f"Round timed out - removing message {key}")
+                                    del messages[key]
         except Exception as e:
             pass
 
@@ -61,17 +63,15 @@ def main():
         except Exception as e:
             pass
 
-    for key, val in messages.items():
-        round = val['sentRound']
-        if round in failedrounds.keys():
-            del messages[key]
+    for key in list(messages):
+        val = messages[key]
         sent = val['sent']
         sent_parsed = datetime.strptime(sent[0] + " " + sent[1], "%Y/%m/%d %H:%M:%S.%f")
         received = val['received']
         received_parsed = datetime.strptime(received[0] + " " + received[1], "%Y/%m/%d %H:%M:%S.%f")
         print(f"Message [{key}]: sent {sent_parsed}, received {received_parsed}, delta: {received_parsed - sent_parsed}")
         with open(args['file'], "a") as f:
-            f.write(f"{key}, {val['sent']}, {val['received']}, {received_parsed - sent_parsed}, {val['sentRound']}, {val['receiverID']}, {val['senderID']}")
+            f.write(f"{key}, {val['sent']}, {val['received']}, {received_parsed - sent_parsed}, {val['sentRound']}, {val['receiverID']}, {val['senderID']}\n")
 
 
 def parse_args():
