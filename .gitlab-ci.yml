@@ -4,7 +4,7 @@ test:
   stage: test
   script:
     - apt update
-    - apt install -y git curl openssl file jq
+    - apt install -y git curl openssl file jq python3
     - mkdir bin
     - ./download_cmix_binaries.sh
     - cd delayedpickup
