@@ -1,3 +1,8 @@
+stages:
+  - test
+  - build
+  - failure
+
 droptest:
   image: docker-registry.xx.network/elixxir/dropped-messages-auto-test
   stage: test
@@ -13,6 +18,15 @@ droptest:
     paths:
       - "delayedpickup/results/*"
       - "delayedpickup/blob/*"
+  only:
+    variables:
+      - $SLEEPTIME
+
+droptest_failure:
+  stage: failure
+  script:
+    - curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"Message drop test pipeline $CI_PIPELINE_URL failed, with $SLEEPTIME length.\"}" $ALERTS_CHAN_WEBHOOK
+  when: on_failure
   only:
     variables:
       - $SLEEPTIME
