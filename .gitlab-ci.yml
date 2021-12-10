@@ -1,24 +1,37 @@
 image: ubuntu:20.04
 
-default:
-  before_script:
-    - apt update
-    - apt install -y git curl openssl file jq python3
-    - mkdir bin
-    - ./download_cmix_binaries.sh
-    - cd delayedpickup
-#  after_script:
-#    - echo "Execute this `after_script` in all jobs by default."
-
 droptest:
   stage: test
   timeout: 2 weeks 1 day
   tags:
     - dropped-messages
   script:
+    - ./download_cmix_binaries.sh
+    - cd delayedpickup
     - ./run.sh 162.55.100.14:22840 $SLEEPTIME 20
   artifacts:
     when: always
     paths:
       - "delayedpickup/results/*"
       - "delayedpickup/blob/*"
+  only:
+    variables:
+      - $SLEEPTIME
+
+imagebuild:
+  image: docker
+  stage: build
+  tags:
+    - dropped-messages
+  script:
+    - docker info
+    - cd docker-image
+    - chmod +x build-image.sh
+    - ./build-image.sh
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  services:
+    - docker:19.03.12-dind
+  only:
+    variables:
+      - $BUILDIMAGE
