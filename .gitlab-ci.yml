@@ -17,7 +17,7 @@ droptest:
     when: always
     paths:
       - "delayedpickup/results/*"
-      - "delayedpickup/blob/*"
+      - "delayedpickup/blob*"
   only:
     variables:
       - $SLEEPTIME
