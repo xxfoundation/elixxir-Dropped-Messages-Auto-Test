@@ -1,6 +1,5 @@
-image: ubuntu:20.04
-
 droptest:
+  image: docker-registry.xx.network/elixxir/dropped-messages-auto-test
   stage: test
   timeout: 2 weeks 1 day
   tags:
