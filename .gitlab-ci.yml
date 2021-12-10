@@ -10,24 +10,13 @@ default:
 #  after_script:
 #    - echo "Execute this `after_script` in all jobs by default."
 
-30s:
+droptest:
   stage: test
-  tags: 
+  timeout: 2 weeks 1 day
+  tags:
     - dropped-messages
   script:
-    - ./run.sh 162.55.100.14:22840 30 30
-  artifacts:
-    when: always
-    paths:
-      - "delayedpickup/results/*"
-      - "delayedpickup/blob/*"
-
-60s:
-  stage: test
-  tags: 
-    - dropped-messages
-  script:
-    - ./run.sh 162.55.100.14:22840 60 30
+    - ./run.sh 162.55.100.14:22840 $SLEEPTIME 20
   artifacts:
     when: always
     paths:
