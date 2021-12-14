@@ -10,7 +10,7 @@ droptest:
   tags:
     - dropped-messages
   script:
-    - curl host.docker.internal:5000/session-handout/$SLEEPTIME > session.tar.gz
+    - curl 172.17.0.1:5000/session-handout/$SLEEPTIME > session.tar.gz
     - tar -xf session.tar.gz
     - mkdir sessions
     - mv generatedsessions/*/* sessions/
