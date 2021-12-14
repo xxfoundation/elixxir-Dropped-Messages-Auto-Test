@@ -32,8 +32,8 @@ CLIENTUDOPTS="--password hello --ndf results/ndf.json -v $DEBUGLEVEL"
 CLIENTSINGLEOPTS="--password hello --ndf results/ndf.json -v $DEBUGLEVEL"
 CLIENTGROUPOPTS="--password hello --ndf results/ndf.json -v $DEBUGLEVEL"
 CLIENTFILETRANSFEROPTS="--password hello --ndf results/ndf.json -v $DEBUGLEVEL"
-SENDER="session/sender"
-RECEIVER="session/receiver"
+SENDER="sessions/sender"
+RECEIVER="sessions/receiver"
 
 mkdir -p $SERVERLOGS
 mkdir -p $GATEWAYLOGS
