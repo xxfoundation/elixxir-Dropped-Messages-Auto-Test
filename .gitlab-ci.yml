@@ -16,6 +16,7 @@ droptest:
     - mv generatedsessions/*/* delayedpickup/sessions/
     - rm -rf generatedsessions session.tar.gz
     - ./download_cmix_binaries.sh
+    - tree
     - cd delayedpickup
     - ./run.sh 162.55.100.14:22840 $SLEEPTIME 20
   artifacts:
