@@ -1,0 +1,51 @@
+stages:
+  - test
+  - build
+  - failure
+
+droptest:
+  image: docker-registry.xx.network/elixxir/dropped-messages-auto-test
+  stage: test
+  timeout: 2 weeks 1 day
+  tags:
+    - dropped-messages
+  script:
+    - ./download_cmix_binaries.sh
+    - cd delayedpickup
+    - ./run.sh 162.55.100.14:22840 $SLEEPTIME 20
+  artifacts:
+    when: always
+    paths:
+      - "delayedpickup/results/*"
+      - "delayedpickup/blob*"
+  only:
+    variables:
+      - $SLEEPTIME
+
+droptest_failure:
+  stage: failure
+  script:
+    - 'curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Message drop test pipeline $CI_PIPELINE_URL failed, with $SLEEPTIME length.\"}" $ALERTS_CHAN_WEBHOOK'
+  when: on_failure
+  only:
+    variables:
+      - $SLEEPTIME
+
+imagebuild:
+  image: docker
+  stage: build
+  tags:
+    - dropped-messages
+  script:
+    - docker info
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - cd docker-image
+    - chmod +x build-image.sh
+    - ./build-image.sh
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  services:
+    - docker:19.03.12-dind
+  only:
+    variables:
+      - $BUILDIMAGE
