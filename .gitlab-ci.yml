@@ -10,6 +10,11 @@ droptest:
   tags:
     - dropped-messages
   script:
+    - curl 137.184.8.44:5000/session-handout/$SLEEPTIME > session.tar.gz
+    - tar -xf session.tar.gz
+    - mkdir sessions
+    - mv generatedsessions/*/* sessions/
+    - rm -rf generatedsessions session.tar.gz
     - ./download_cmix_binaries.sh
     - cd delayedpickup
     - ./run.sh 162.55.100.14:22840 $SLEEPTIME 20
