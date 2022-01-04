@@ -48,6 +48,7 @@ def main():
                             for key in list(messages):
                                 if messages[key][SENT_ROUND] == int(part):
                                     print(f"Round timed out - removing message {key}")
+                                    sendcnt -= 1
                                     del messages[key]
         except Exception as e:
             pass
@@ -60,8 +61,8 @@ def main():
             date = temp[1]
             time = temp[2]
             rest = temp[3]
-            if level == "INFO" and "Received message of type E2E" in rest:
-                digest = rest.split(" ")[-1].strip()
+            if level == "INFO" and "Received message of ecr type E2E" in rest:
+                digest = rest[rest.find("msgDigest"):].split()[1].strip(',')
                 sender_id = rest[rest.find("from"):].split()[1]
                 messages[digest][RECEIVED_TIME] = (date, time)
                 messages[digest][SENDER_ID] = sender_id
