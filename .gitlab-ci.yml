@@ -10,6 +10,7 @@ droptest:
   tags:
     - dropped-messages
   script:
+    - openssl version
     - curl 137.184.8.44:5000/session-handout/$SLEEPTIME > session.tar.gz
     - tar -xf session.tar.gz
     - mkdir delayedpickup/sessions
