@@ -11,11 +11,11 @@ droptest:
     - dropped-messages
   script:
     - openssl version
-    - curl 137.184.8.44:5000/session-handout/$SLEEPTIME > session.tar.gz
-    - tar -xf session.tar.gz
-    - mkdir delayedpickup/sessions
-    - mv generatedsessions/*/* delayedpickup/sessions/
-    - rm -rf generatedsessions session.tar.gz
+    #    - curl 137.184.8.44:5000/session-handout/$SLEEPTIME > session.tar.gz
+    #    - tar -xf session.tar.gz
+    #    - mkdir delayedpickup/sessions
+    #    - mv generatedsessions/*/* delayedpickup/sessions/
+    #    - rm -rf generatedsessions session.tar.gz
     - ./download_cmix_binaries.sh
     - ./bin/client version
     - tree
