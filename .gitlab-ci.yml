@@ -31,7 +31,7 @@ droptest:
       - $SLEEPTIME
 
 droptest_failure:
-  #image: docker-registry.xx.network/elixxir/dropped-messages-auto-test
+  image: docker-registry.xx.network/elixxir/dropped-messages-auto-test
   stage: failure
   script:
     - 'curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Message drop test pipeline $CI_PIPELINE_URL failed, with $SLEEPTIME length.\"}" $ALERTS_CHAN_WEBHOOK'
