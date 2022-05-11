@@ -3,3 +3,5 @@ delayedpickup/blob*
 delayedpickup/results*
 bin*
 *.log
+
+.DS_Store
