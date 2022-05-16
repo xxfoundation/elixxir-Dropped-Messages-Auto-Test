@@ -5,3 +5,5 @@ bin*
 *.log
 
 .DS_Store
+scripting/data.db*
+scripting/__pycache__
