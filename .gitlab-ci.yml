@@ -16,7 +16,7 @@ droptest:
     #    - mkdir delayedpickup/sessions
     #    - mv generatedsessions/*/* delayedpickup/sessions/
     #    - rm -rf generatedsessions session.tar.gz
-    - ./download_cmix_binaries.sh
+    - timeout 15m ./download_cmix_binaries.sh
     - ./bin/client version
     - tree
     - cd delayedpickup
