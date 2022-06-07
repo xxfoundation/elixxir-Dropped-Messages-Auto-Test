@@ -153,3 +153,7 @@ eval $PARSECMD >> $CLIENTOUT/parser.txt &
 PIDVAL=$!
 echo "$PARSECMD -- $PIDVAL"
 wait $PIDVAL
+echo "--- parser.txt output ---"
+cat $CLIENTOUT/parser.txt
+echo "--- parsed.csv output ---"
+cat $(pwd)/results/parsed.csv
