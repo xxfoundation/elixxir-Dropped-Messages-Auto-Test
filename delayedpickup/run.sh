@@ -142,4 +142,5 @@ echo "$CLIENTCMD -- $PIDVAL"
 wait $PIDVAL
 
 PARSECMD="python3 parse.py --results $(pwd)/results --file $(pwd)/results/parsed.csv"
+set -o pipefail
 eval $PARSECMD | tee $CLIENTOUT/parser.txt
