@@ -31,6 +31,14 @@ CLIENTFILETRANSFEROPTS="--password hello --ndf results/ndf.json -v $DEBUGLEVEL"
 SENDER="sessions/sender"
 RECEIVER="sessions/receiver"
 
+print_logs() {
+    echo "--- parser.txt output ---"
+    cat $CLIENTOUT/parser.txt
+    echo "--- parsed.csv output ---"
+    cat $(pwd)/results/parsed.csv
+}
+trap "print_logs" ERR
+
 mkdir -p $CLIENTOUT
 
 echo "Connecting to network defined at $NETWORKENTRYPOINT"
@@ -146,7 +154,4 @@ eval $PARSECMD >> $CLIENTOUT/parser.txt &
 PIDVAL=$!
 echo "$PARSECMD -- $PIDVAL"
 wait $PIDVAL
-echo "--- parser.txt output ---"
-cat $CLIENTOUT/parser.txt
-echo "--- parsed.csv output ---"
-cat $(pwd)/results/parsed.csv
+print_logs
