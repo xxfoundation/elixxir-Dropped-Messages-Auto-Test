@@ -9,6 +9,7 @@ RECEIVER_ID = 'receiverID'
 RECEIVED_TIME = 'received'
 SENDER_ID = 'senderID'
 
+
 def main():
     exit_code = 0
     args = parse_args()
@@ -16,15 +17,15 @@ def main():
 
     # SENDER LOGS
     client42_log = get_file_contents(results_dir+"/clients/client42-wv.log")
-    client42_text = get_file_contents(results_dir+"/clients/client42-wv.txt")
 
     # RECEIVER LOGS
     client43_log = get_file_contents(results_dir+"/clients/client43-wv.log")
-    client43_text = get_file_contents(results_dir+"/clients/client43-wv.txt")
 
     messages = {}
     sendcnt = 0
     for ind, l in enumerate(client42_log):
+        if "INFO" not in l:
+            continue
         try:
             temp = l.split(' ', 3)
             level = temp[0]
@@ -51,24 +52,25 @@ def main():
                                     sendcnt -= 1
                                     del messages[key]
         except Exception as e:
-            pass
+            print(f"Sender exception {e}: {l}")
 
     recvcnt = 0
     for ind, l in enumerate(client43_log):
+        if "INFO" not in l:
+            continue
         try:
             temp = l.split(' ', 3)
-            level = temp[0]
             date = temp[1]
             time = temp[2]
             rest = temp[3]
-            if level == "INFO" and "Received message of ecr type E2E" in rest:
+            if "Received message of" in rest:
                 digest = rest[rest.find("msgDigest"):].split()[1].strip(',')
-                sender_id = rest[rest.find("from"):].split()[1]
+                #sender_id = rest[rest.find("from"):].split()[1]
                 messages[digest][RECEIVED_TIME] = (date, time)
-                messages[digest][SENDER_ID] = sender_id
+                #messages[digest][SENDER_ID] = sender_id
                 recvcnt += 1
         except Exception as e:
-            pass
+            print(f"Receiver exception {e}: {l}")
 
     for key in list(messages):
         message_received = False
@@ -93,6 +95,7 @@ def main():
 
     print(f"Received {recvcnt}/{sendcnt}")
     exit(exit_code)
+
 
 def parse_args():
     parser = argparse.ArgumentParser()
