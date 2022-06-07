@@ -104,7 +104,7 @@ def parse_args():
 
 
 def get_file_contents(path):
-    with open(path, "r") as f:
+    with open(path, "r", errors='ignore') as f:
         return f.readlines()
 
 
