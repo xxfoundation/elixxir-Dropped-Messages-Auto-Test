@@ -21,11 +21,7 @@ NUMSENDS=$3
 
 DEBUGLEVEL=${DEBUGLEVEL-1}
 
-SERVERLOGS=results/servers
-GATEWAYLOGS=results/gateways
 CLIENTOUT=results/clients
-UDBOUT=results/udb-console.txt
-CLIENTCLEAN=results/clients-cleaned
 
 CLIENTOPTS="--password hello --ndf results/ndf.json --waitTimeout 240 --unsafe-channel-creation -v $DEBUGLEVEL"
 CLIENTUDOPTS="--password hello --ndf results/ndf.json -v $DEBUGLEVEL"
@@ -35,10 +31,7 @@ CLIENTFILETRANSFEROPTS="--password hello --ndf results/ndf.json -v $DEBUGLEVEL"
 SENDER="sessions/sender"
 RECEIVER="sessions/receiver"
 
-mkdir -p $SERVERLOGS
-mkdir -p $GATEWAYLOGS
 mkdir -p $CLIENTOUT
-mkdir -p $CLIENTCLEAN
 
 echo "Connecting to network defined at $NETWORKENTRYPOINT"
 echo $NETWORKENTRYPOINT > results/startgwserver.txt
