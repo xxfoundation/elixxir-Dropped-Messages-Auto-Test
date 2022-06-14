@@ -69,12 +69,12 @@ fi
 
 # Non-precanned E2E user messaging
 echo "SENDING E2E MESSAGES TO NEW USERS..."
-CLIENTCMD="timeout 240s ../bin/client $CLIENTOPTS -l $CLIENTOUT/client42.log -s $SENDER --writeContact $CLIENTOUT/rick42-contact.bin --unsafe -m \"Hello from Rick42 to myself, without E2E Encryption\""
+CLIENTCMD="timeout 3000s ../bin/client $CLIENTOPTS --verify-sends -l $CLIENTOUT/client42.log -s $SENDER --writeContact $CLIENTOUT/rick42-contact.bin --unsafe  -m \"Hello from Rick42 to myself, without E2E Encryption\""
 eval $CLIENTCMD >> $CLIENTOUT/client42.txt &
 PIDVAL=$!
 echo "$CLIENTCMD -- $PIDVAL"
 wait $PIDVAL
-CLIENTCMD="timeout 240s ../bin/client $CLIENTOPTS -l $CLIENTOUT/client43.log -s $RECEIVER --writeContact $CLIENTOUT/ben43-contact.bin --destfile $CLIENTOUT/rick42-contact.bin --send-auth-request --sendCount 0 --receiveCount 0"
+CLIENTCMD="timeout 300s ../bin/client $CLIENTOPTS --verify-sends -l $CLIENTOUT/client43.log -s $RECEIVER --writeContact $CLIENTOUT/ben43-contact.bin --destfile $CLIENTOUT/rick42-contact.bin --send-auth-request --sendCount 0 --receiveCount 0"
 eval $CLIENTCMD >> $CLIENTOUT/client43.txt &
 PIDVAL2=$!
 echo "$CLIENTCMD -- $PIDVAL"
@@ -92,7 +92,7 @@ BENID=${TMPID}
 echo "BEN ID: $BENID"
 
 # Client 42 will now wait for client 43's E2E Auth channel request and confirm
-CLIENTCMD="timeout 240s ../bin/client $CLIENTOPTS -l $CLIENTOUT/client42.log -s $SENDER --destfile $CLIENTOUT/ben43-contact.bin --sendCount 0 --receiveCount 0"
+CLIENTCMD="timeout 300s ../bin/client $CLIENTOPTS -l $CLIENTOUT/client42.log -s $SENDER --destfile $CLIENTOUT/ben43-contact.bin --sendCount 0 --receiveCount 0"
 eval $CLIENTCMD >> $CLIENTOUT/client42.txt &
 PIDVAL=$!
 echo "$CLIENTCMD -- $PIDVAL"
@@ -101,21 +101,21 @@ wait $PIDVAL2
 
 
 # Do some basic e2e sending to make sure everything is set up properly
-CLIENTCMD="timeout 240s ../bin/client $CLIENTOPTS --verify-sends -l $CLIENTOUT/client42.log -s $SENDER --destid b64:$BENID --sendCount 5 --receiveCount 5 -m \"Hello from Rick42, with E2E Encryption\""
+CLIENTCMD="timeout 300s ../bin/client $CLIENTOPTS --verify-sends -l $CLIENTOUT/client42.log -s $SENDER --destid b64:$BENID --sendCount 5 --receiveCount 5 -m \"Hello from Rick42, with E2E Encryption\""
 eval $CLIENTCMD >> $CLIENTOUT/client42.txt &
 PIDVAL=$!
 echo "$CLIENTCMD -- $PIDVAL"
-CLIENTCMD="timeout 240s ../bin/client $CLIENTOPTS --verify-sends -l $CLIENTOUT/client43.log -s $RECEIVER --destid b64:$RICKID --sendCount 5 --receiveCount 5 -m \"Hello from Ben43, with E2E Encryption\""
+CLIENTCMD="timeout 300s ../bin/client $CLIENTOPTS --verify-sends -l $CLIENTOUT/client43.log -s $RECEIVER --destid b64:$RICKID --sendCount 5 --receiveCount 5 -m \"Hello from Ben43, with E2E Encryption\""
 eval $CLIENTCMD >> $CLIENTOUT/client43.txt &
 PIDVAL2=$!
 echo "$CLIENTCMD -- $PIDVAL"
 wait $PIDVAL
 wait $PIDVAL2
-CLIENTCMD="timeout 240s ../bin/client $CLIENTOPTS --verify-sends -l $CLIENTOUT/client42.log -s $SENDER  --destid b64:$BENID --sendCount 5 --receiveCount 5 -m \"Hello from Rick42, with E2E Encryption\""
+CLIENTCMD="timeout 300s ../bin/client $CLIENTOPTS --verify-sends -l $CLIENTOUT/client42.log -s $SENDER  --destid b64:$BENID --sendCount 5 --receiveCount 5 -m \"Hello from Rick42, with E2E Encryption\""
 eval $CLIENTCMD >> $CLIENTOUT/client42.txt &
 PIDVAL=$!
 echo "$CLIENTCMD -- $PIDVAL"
-CLIENTCMD="timeout 240s ../bin/client $CLIENTOPTS --verify-sends -l $CLIENTOUT/client43.log -s $RECEIVER  --destid b64:$RICKID --sendCount 5 --receiveCount 5 -m \"Hello from Ben43, with E2E Encryption\""
+CLIENTCMD="timeout 300s ../bin/client $CLIENTOPTS --verify-sends -l $CLIENTOUT/client43.log -s $RECEIVER  --destid b64:$RICKID --sendCount 5 --receiveCount 5 -m \"Hello from Ben43, with E2E Encryption\""
 eval $CLIENTCMD >> $CLIENTOUT/client43.txt &
 PIDVAL2=$!
 echo "$CLIENTCMD -- $PIDVAL"
