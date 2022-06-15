@@ -23,7 +23,7 @@ DEBUGLEVEL=${DEBUGLEVEL-1}
 
 CLIENTOUT=results/clients
 
-CLIENTOPTS="--password hello --ndf results/ndf.json --waitTimeout 240 --unsafe-channel-creation -v $DEBUGLEVEL"
+CLIENTOPTS="--password hello --ndf results/ndf.json --waitTimeout 300 --unsafe-channel-creation -v $DEBUGLEVEL"
 CLIENTUDOPTS="--password hello --ndf results/ndf.json -v $DEBUGLEVEL"
 CLIENTSINGLEOPTS="--password hello --ndf results/ndf.json -v $DEBUGLEVEL"
 CLIENTGROUPOPTS="--password hello --ndf results/ndf.json -v $DEBUGLEVEL"
@@ -69,7 +69,7 @@ fi
 
 # Non-precanned E2E user messaging
 echo "SENDING E2E MESSAGES TO NEW USERS..."
-CLIENTCMD="timeout 3000s ../bin/client $CLIENTOPTS --verify-sends -l $CLIENTOUT/client42.log -s $SENDER --writeContact $CLIENTOUT/rick42-contact.bin --unsafe  -m \"Hello from Rick42 to myself, without E2E Encryption\""
+CLIENTCMD="timeout 300s ../bin/client $CLIENTOPTS --verify-sends -l $CLIENTOUT/client42.log -s $SENDER --writeContact $CLIENTOUT/rick42-contact.bin --unsafe  -m \"Hello from Rick42 to myself, without E2E Encryption\""
 eval $CLIENTCMD >> $CLIENTOUT/client42.txt &
 PIDVAL=$!
 echo "$CLIENTCMD -- $PIDVAL"
