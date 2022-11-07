@@ -20,7 +20,7 @@ droptest:
     - ./bin/client version
     - tree
     - cd delayedpickup
-    - ./run.sh 162.55.100.14:22840 $SLEEPTIME 20
+    - ./run.sh 161.35.228.41:22840 $SLEEPTIME 20
   artifacts:
     when: always
     paths:
