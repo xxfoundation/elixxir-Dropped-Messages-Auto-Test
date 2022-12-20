@@ -38,17 +38,18 @@ echo $NETWORKENTRYPOINT > results/startgwserver.txt
 echo "Sleep time $SLEEPTIME"
 echo "Num sends $NUMSENDS"
 
-echo "DOWNLOADING TLS Cert..."
-CMD="openssl s_client -showcerts -connect $(cat results/startgwserver.txt)"
-echo $CMD
-eval $CMD < /dev/null 2>&1 > "results/startgwcert.bin"
-CMD="cat results/startgwcert.bin | openssl x509 -outform PEM"
-echo $CMD
-eval $CMD > "results/startgwcert.pem"
-head "results/startgwcert.pem"
+#echo "DOWNLOADING TLS Cert..."
+#CMD="openssl s_client -showcerts -connect $(cat results/startgwserver.txt)"
+#echo $CMD
+#eval $CMD < /dev/null 2>&1 > "results/startgwcert.bin"
+#CMD="cat results/startgwcert.bin | openssl x509 -outform PEM"
+#echo $CMD
+#eval $CMD > "results/startgwcert.pem"
+#head "results/startgwcert.pem"
 
 echo "DOWNLOADING NDF..."
-CLIENTCMD="../bin/client getndf --gwhost $(cat results/startgwserver.txt) --cert results/startgwcert.pem"
+#CLIENTCMD="../bin/client getndf --gwhost $(cat results/startgwserver.txt) --cert results/startgwcert.pem"
+CLIENTCMD="../bin/client getndf --env mainnet"
 eval $CLIENTCMD >> results/ndf.json 2>&1 &
 PIDVAL=$!
 echo "$CLIENTCMD -- $PIDVAL"
